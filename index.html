@@ -687,7 +687,11 @@ THEME_CARD_END
 
 6. Soft close AFTER the THEME_CARD_END block: mention that if she wants help bringing the vision to life, the team at Coord on Call offers calls and planning support — keep it light, warm, low pressure. Not salesy.
 
-IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses in casual exchanges — save structure for the final theme reveal. Ask ONE follow-up question at a time, not five. This is a conversation, not an intake form. ALWAYS include the THEME_CARD_START/THEME_CARD_END block at the end of the final theme reveal.`;
+IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses in casual exchanges — save structure for the final theme reveal. Ask ONE follow-up question at a time, not five. This is a conversation, not an intake form.
+
+CRITICAL CARD RULE: You MUST ALWAYS end the final theme reveal with the THEME_CARD_START/THEME_CARD_END block. No exceptions. This is not optional. Every final theme response must include this block or the tool breaks. Keep each field in the JSON to 2-3 sentences maximum to avoid truncation.
+
+VENUE AND DATE LOGIC: If a bride has already booked a venue, she already has a date set. Do NOT ask her about preferred time of year or season. Instead ask what date or season her booked wedding is. The date question only applies to brides who have NOT yet booked a venue.`;
 
   // Theme Card Renderer
   function renderThemeCard(data) {
@@ -720,63 +724,74 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
     const headerBg2 = (data.colors && data.colors[1]) ? data.colors[1].hex : headerBg;
     const accentColor = (data.colors && data.colors[2]) ? data.colors[2].hex : '#c9a96e';
 
+    const twoColSection = (label, title, body, right) => `
+      <div style="padding: 20px 24px ${right ? '20px 20px' : '20px 32px'};">
+        <div style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #9e9896; margin-bottom: 5px;">${label}</div>
+        <div style="font-size: 14px; font-weight: 500; color: #3d3d3d; margin-bottom: 6px;">${title}</div>
+        <div style="font-size: 13px; color: #7a7a7a; line-height: 1.7;">${body}</div>
+      </div>`;
+
+    const fullSection = (label, title, body) => `
+      <div style="padding: 20px 32px; border-bottom: 1px solid #f0ebe6;">
+        <div style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #9e9896; margin-bottom: 5px;">${label}</div>
+        <div style="font-size: 14px; font-weight: 500; color: #3d3d3d; margin-bottom: 6px;">${title}</div>
+        <div style="font-size: 13px; color: #7a7a7a; line-height: 1.7;">${body}</div>
+      </div>`;
+
+    const optionalFoodSection = data.food_title && data.food_body ? fullSection('Food direction', data.food_title, data.food_body) : '';
+    const optionalVenueSection = data.venue_title && data.venue_body ? fullSection('Venue things to look for', data.venue_title, data.venue_body) : '';
+
     wrapper.innerHTML = `
-      <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.1); max-width: 94%; margin: 0 auto;">
+      <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.1); max-width: 96%; margin: 0 auto;">
+
         <div style="background: linear-gradient(135deg, ${headerBg} 0%, ${headerBg2} 100%); padding: 28px 32px 24px; text-align: center;">
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.3em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 10px;">The Coord Consult · Wedding Theme Creator</div>
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: #ffffff; letter-spacing: 0.05em; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">${data.theme_name}</div>
           <div style="font-size: 11px; letter-spacing: 0.2em; color: rgba(255,255,255,0.85); text-transform: uppercase;">Your personalized wedding theme</div>
         </div>
+
         <div style="padding: 16px 32px; border-bottom: 1px solid #f0ebe6; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center;">
           <div><div style="font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #9e9896; margin-bottom: 3px;">Venue</div><div style="font-size: 13px; color: #3d3d3d;">${data.venue}</div></div>
           <div><div style="font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #9e9896; margin-bottom: 3px;">Season</div><div style="font-size: 13px; color: #3d3d3d;">${data.season_style}</div></div>
           <div><div style="font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #9e9896; margin-bottom: 3px;">Vibe</div><div style="font-size: 13px; color: #3d3d3d;">${data.vibe}</div></div>
         </div>
+
         <div style="padding: 16px 32px; border-bottom: 1px solid #f0ebe6;">
           <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9e9896; margin-bottom: 12px;">Color story</div>
-          <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             ${swatches}
-            <div style="margin-left: 10px; font-size: 12px; color: #7a7a7a; font-style: italic; line-height: 1.6;">${data.color_note}</div>
+            <div style="margin-left: 8px; font-size: 12px; color: #7a7a7a; font-style: italic; line-height: 1.6; flex: 1; min-width: 140px;">${data.color_note}</div>
           </div>
         </div>
+
         <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #f0ebe6;">
-          <div style="padding: 16px 24px 16px 32px; border-right: 1px solid #f0ebe6;">
-            <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9e9896; margin-bottom: 6px;">Photography</div>
-            <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.photography_title}</div>
-            <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7;">${data.photography_body}</div>
-          </div>
-          <div style="padding: 16px 32px 16px 24px;">
-            <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9e9896; margin-bottom: 6px;">Florals</div>
-            <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.florals_title}</div>
-            <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7;">${data.florals_body}</div>
-          </div>
+          <div style="border-right: 1px solid #f0ebe6;">${twoColSection('Photography', data.photography_title, data.photography_body, false)}</div>
+          <div>${twoColSection('Florals', data.florals_title, data.florals_body, true)}</div>
         </div>
-        <div style="border-bottom: 1px solid #f0ebe6;">
-          <div style="padding: 16px 32px;">
-            <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9e9896; margin-bottom: 6px;">Attire</div>
-            <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.attire_title}</div>
-            <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7;">${data.attire_body}</div>
-          </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #f0ebe6;">
+          <div style="border-right: 1px solid #f0ebe6;">${twoColSection('Attire', data.attire_title, data.attire_body, false)}</div>
+          <div>${twoColSection('Vibe & feeling', data.vibe, '', true)}</div>
         </div>
-        ${foodSection}
-        ${venueSection}
-        <div style="padding: 16px 32px; background: #fdf6f0; border-bottom: 1px solid #f0ebe6; border-left: 3px solid #d4a09a;">
-          <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a09a; margin-bottom: 6px;">✦ Coordinator's pick</div>
-          <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.coordinators_pick_title}</div>
-          <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7; font-style: italic;">${data.coordinators_pick_body}</div>
+
+        ${optionalFoodSection}
+        ${optionalVenueSection}
+
+        <div style="margin: 0 32px; padding: 20px 20px; background: #fdf6f0; border-radius: 8px; border-left: 3px solid #d4a09a; margin-bottom: 0;">
+          <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a09a; margin-bottom: 5px;">✦ Coordinator's pick</div>
+          <div style="font-size: 14px; font-weight: 500; color: #3d3d3d; margin-bottom: 6px;">${data.coordinators_pick_title}</div>
+          <div style="font-size: 13px; color: #7a7a7a; line-height: 1.7; font-style: italic;">${data.coordinators_pick_body}</div>
         </div>
-        <div style="padding: 16px 32px;">
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <img src="https://static.wixstatic.com/shapes/73d71f_cb82c02a5d394bf39834a4a6485c3f45.svg" alt="Coord on Call" style="height: 140px; width: auto;" />
-            <div style="text-align: right;">
-              <div style="font-size: 12px; color: #7a7a7a; margin-bottom: 4px;">Want help bringing this vision to life?</div>
-              <div style="font-size: 13px; color: #d4a09a; font-weight: 500;">coordoncall.com</div>
-            </div>
+
+        <div style="padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f0ebe6; margin-top: 16px;">
+          <img src="https://static.wixstatic.com/shapes/73d71f_cb82c02a5d394bf39834a4a6485c3f45.svg" alt="Coord on Call" style="height: 140px; width: auto;" />
+          <div style="text-align: right;">
+            <div style="font-size: 12px; color: #7a7a7a; margin-bottom: 4px;">Want help bringing this vision to life?</div>
+            <div style="font-size: 13px; color: #d4a09a; font-weight: 500;">coordoncall.com</div>
+            <button onclick="printThemeCard(this)" style="margin-top: 10px; padding: 10px 24px; background: #d4a09a; color: white; border: none; border-radius: 4px; font-family: Jost, sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; display: block; margin-left: auto;">↓ Save as PDF</button>
           </div>
         </div>
-        <div style="padding: 12px 32px; background: #fdf6f0; text-align: center;">
-          <button onclick="printThemeCard(this)" style="padding: 10px 24px; background: #d4a09a; color: white; border: none; border-radius: 4px; font-family: Jost, sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer;">↓ Save as PDF</button>
-        </div>
+
       </div>`;
     
     messages.appendChild(wrapper);
@@ -907,7 +922,7 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
-          max_tokens: 2000,
+          max_tokens: 3000,
           system: SYSTEM_PROMPT,
           messages: conversationHistory
         })
