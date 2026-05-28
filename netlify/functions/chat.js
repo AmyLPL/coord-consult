@@ -11,7 +11,7 @@ export default async (request) => {
 
   try {
     const body = await request.json();
-    const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+    const apiKey = process.env.ANTHROPIC_API_KEY;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
