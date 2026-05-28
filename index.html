@@ -807,6 +807,15 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
     if (!name || !fiance || !email) return;
     userName = name;
     fianceName = fiance;
+
+    // Send lead to Google Sheet (fire and forget, don't block the user)
+    fetch('https://script.google.com/macros/s/AKfycbyyEO8uNAbi1r-Bl0_VBtefRvkzI4kASEHjxEuStH6uWMSj0SXUzGLw1ZdVnCtLePG3GQ/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName: name, fianceName: fiance, email: email })
+    }).catch(err => console.log('Lead capture error:', err));
+
     document.getElementById('gate-screen').style.display = 'none';
     const chatScreen = document.getElementById('chat-screen');
     chatScreen.style.display = 'flex';
