@@ -755,12 +755,12 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
         body: JSON.stringify({
-          model: 'model: 'claude-haiku-4-5-20251001',
+          model: 'claude-haiku-4-5-20251001', 
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: conversationHistory
         })
-      });
+      }); 
 
       const data = await response.json();
       removeTyping();
