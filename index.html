@@ -642,7 +642,12 @@ HOW THE CONVERSATION FLOWS:
 
    THEME NAME: [A poetic, specific name — e.g. "Golden Hour Summer," "Midnight in the Mountains," "The Great Gatsby in the Vines"]
    
-   PHOTOGRAPHY STYLE: [Specific style recommendation with reasoning — light and airy / dark and moody / editorial / natural documentary. Be opinionated.]
+   PHOTOGRAPHY STYLE: Use this framework to guide photography recommendations:
+- CLASSIC: Large posed formal shots, traditional family portraits, structured and timeless. Brides should look for: full family portraits, formal couple poses, consistent lighting. Avoid: photographers whose portfolios are mostly candid with few posed shots.
+- MODERN/EDITORIAL: Magazine quality, interesting angles, unconventional compositions, black and white moments, fashion-forward. Brides should look for: dramatic angles, black and white edits, editorial couple shots. Avoid: traditional posed family portraits dominating the portfolio.
+- ROMANTIC/DOCUMENTARY: Candid, soft, intimate, voyeuristic romance shots, genuine unposed moments. Brides should look for: couples who don't seem to know the camera is there, soft natural light, genuine laughter. Avoid: photographers whose portfolios are mostly stiff posed shots.
+- PARTY/CELEBRATORY: Dancing, laughing, movement, energy, the reception told as a story. Brides should look for: dynamic dance floor shots, confetti moments, big group energy. Avoid: photographers who seem to disappear after the ceremony.
+Always give the style name AND specific portfolio guidance so the bride knows exactly what to look for and what to avoid.
    
    COLOR STORY: [Evolved from what she said, with reasoning. Name specific colors and explain why they work together.]
    
@@ -670,12 +675,15 @@ THEME_CARD_START
     {"name": "[color name]", "hex": "[hex code]"}
   ],
   "color_note": "[one sentence explaining the color story]",
-  "photography_title": "[2-3 word photography style title]",
-  "photography_body": "[2-3 sentence photography recommendation]",
+  "photography_title": "[2-3 word photography style title e.g. Warm Documentary, Modern Editorial, Classic Romantic, Party Candid]",
+  "photography_style": "[one of: Classic, Modern/Editorial, Romantic/Documentary, Party/Celebratory, or a combination]",
+  "photography_what_to_look_for": "[1-2 sentences on exactly what to look for in a photographer portfolio for this theme. Be specific: lighting style, pose style, composition. Also mention what to avoid.]",
   "florals_title": "[2-3 word floral title]",
   "florals_body": "[2-3 sentence floral recommendation]",
   "attire_title": "[2-3 word attire title]",
   "attire_body": "[2-3 sentence attire recommendation]",
+  "key_details_title": "[2-3 word title for key decor or atmosphere details]",
+  "key_details_body": "[2-3 sentences on specific decor, lighting, atmosphere details that bring this theme to life]",
   "food_title": "[2-3 word food title or null if not applicable]",
   "food_body": "[2-3 sentence food recommendation or null if not applicable]",
   "venue_title": "[2-3 word venue title or null if not applicable]",
@@ -765,13 +773,13 @@ VENUE AND DATE LOGIC: If a bride has already booked a venue, she already has a d
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #f0ebe6;">
-          <div style="border-right: 1px solid #f0ebe6;">${twoColSection('Photography', data.photography_title, data.photography_body, false)}</div>
+          <div style="border-right: 1px solid #f0ebe6;">${twoColSection('Photography · ' + (data.photography_style || ''), data.photography_title, (data.photography_body || '') + (data.photography_what_to_look_for ? '<br><br><span style="font-size:11px;color:#9e9896;text-transform:uppercase;letter-spacing:0.1em;">Look for</span><br>' + data.photography_what_to_look_for : ''), false)}</div>
           <div>${twoColSection('Florals', data.florals_title, data.florals_body, true)}</div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #f0ebe6;">
           <div style="border-right: 1px solid #f0ebe6;">${twoColSection('Attire', data.attire_title, data.attire_body, false)}</div>
-          <div>${twoColSection('Vibe & feeling', data.vibe, '', true)}</div>
+          <div>${twoColSection('Key details', data.key_details_title || '', data.key_details_body || '', true)}</div>
         </div>
 
         ${optionalFoodSection}
