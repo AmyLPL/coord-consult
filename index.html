@@ -512,9 +512,10 @@
     </p>
     <form class="gate-form" id="gate-form">
       <input type="text" id="gate-name" placeholder="Your first name" required />
+      <input type="text" id="gate-fiance" placeholder="Your fiancé's first name" required />
       <input type="email" id="gate-email" placeholder="Your email address" required />
       <button type="submit" class="btn-primary">Start My Consult →</button>
-      <p class="gate-note">No spam. Just coordinator wisdom, straight to your inbox.</p>
+      <p class="gate-note">Your conversation is private and won't be shared with anyone. No spam, just coordinator wisdom straight to your inbox.</p>
       <p class="error-msg" id="gate-error" style="display:none"></p>
     </form>
   </div>
@@ -544,6 +545,7 @@
 
 <script>
   let userName = '';
+  let fianceName = '';
   let conversationHistory = [];
   let isWaiting = false;
 
@@ -713,12 +715,17 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
         <div style="font-size: 10px; color: #9e9896;">${c.name}</div>
       </div>`).join('');
 
+    // Build dynamic header color from first two swatches
+    const headerBg = (data.colors && data.colors[0]) ? data.colors[0].hex : '#1a1a2e';
+    const headerBg2 = (data.colors && data.colors[1]) ? data.colors[1].hex : headerBg;
+    const accentColor = (data.colors && data.colors[2]) ? data.colors[2].hex : '#c9a96e';
+
     wrapper.innerHTML = `
       <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.1); max-width: 94%; margin: 0 auto;">
-        <div style="background: #1a1a2e; padding: 28px 32px 24px; text-align: center;">
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.3em; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 10px;">The Coord Consult · Wedding Theme Creator</div>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: #f5e8e6; letter-spacing: 0.05em; margin-bottom: 6px;">${data.theme_name}</div>
-          <div style="font-size: 11px; letter-spacing: 0.2em; color: #c9a96e; text-transform: uppercase;">Your personalized wedding theme</div>
+        <div style="background: linear-gradient(135deg, ${headerBg} 0%, ${headerBg2} 100%); padding: 28px 32px 24px; text-align: center;">
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.3em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 10px;">The Coord Consult · Wedding Theme Creator</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: #ffffff; letter-spacing: 0.05em; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">${data.theme_name}</div>
+          <div style="font-size: 11px; letter-spacing: 0.2em; color: rgba(255,255,255,0.85); text-transform: uppercase;">Your personalized wedding theme</div>
         </div>
         <div style="padding: 16px 32px; border-bottom: 1px solid #f0ebe6; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center;">
           <div><div style="font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #9e9896; margin-bottom: 3px;">Venue</div><div style="font-size: 13px; color: #3d3d3d;">${data.venue}</div></div>
@@ -744,23 +751,23 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
             <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7;">${data.florals_body}</div>
           </div>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #f0ebe6;">
-          <div style="padding: 16px 24px 16px 32px; border-right: 1px solid #f0ebe6;">
+        <div style="border-bottom: 1px solid #f0ebe6;">
+          <div style="padding: 16px 32px;">
             <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9e9896; margin-bottom: 6px;">Attire</div>
             <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.attire_title}</div>
             <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7;">${data.attire_body}</div>
           </div>
-          <div style="padding: 16px 32px 16px 24px;">
-            <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #9e9896; margin-bottom: 6px;">Coordinator's pick</div>
-            <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.coordinators_pick_title}</div>
-            <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7; font-style: italic;">${data.coordinators_pick_body}</div>
-          </div>
         </div>
         ${foodSection}
         ${venueSection}
+        <div style="padding: 16px 32px; background: #fdf6f0; border-bottom: 1px solid #f0ebe6; border-left: 3px solid #d4a09a;">
+          <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a09a; margin-bottom: 6px;">✦ Coordinator's pick</div>
+          <div style="font-size: 13px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${data.coordinators_pick_title}</div>
+          <div style="font-size: 12px; color: #7a7a7a; line-height: 1.7; font-style: italic;">${data.coordinators_pick_body}</div>
+        </div>
         <div style="padding: 16px 32px;">
           <div style="display: flex; align-items: center; justify-content: space-between;">
-            <img src="https://static.wixstatic.com/shapes/73d71f_cb82c02a5d394bf39834a4a6485c3f45.svg" alt="Coord on Call" style="height: 80px; width: auto;" />
+            <img src="https://static.wixstatic.com/shapes/73d71f_cb82c02a5d394bf39834a4a6485c3f45.svg" alt="Coord on Call" style="height: 140px; width: auto;" />
             <div style="text-align: right;">
               <div style="font-size: 12px; color: #7a7a7a; margin-bottom: 4px;">Want help bringing this vision to life?</div>
               <div style="font-size: 13px; color: #d4a09a; font-weight: 500;">coordoncall.com</div>
@@ -795,9 +802,11 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
   document.getElementById('gate-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('gate-name').value.trim();
+    const fiance = document.getElementById('gate-fiance').value.trim();
     const email = document.getElementById('gate-email').value.trim();
-    if (!name || !email) return;
+    if (!name || !fiance || !email) return;
     userName = name;
+    fianceName = fiance;
     document.getElementById('gate-screen').style.display = 'none';
     const chatScreen = document.getElementById('chat-screen');
     chatScreen.style.display = 'flex';
@@ -805,7 +814,7 @@ IMPORTANT: Keep responses conversational and warm. No bullet-pointed responses i
   });
 
   function startConversation() {
-    const opening = `Hi ${userName}! I'm so glad you're here. Let's figure out your wedding vision together — and I promise this is going to be more fun than filling out a form.\n\nForget colors for a second. Just tell me: when you picture your wedding day, what do you feel? What's the first image that comes to mind?`;
+    const opening = `Hi ${userName}! I'm so glad you're here. Let's figure out your wedding vision together — and I promise this is going to be more fun than filling out a form.\n\nBefore we dive in, how exciting that you and ${fianceName} are planning your wedding! Now forget colors for a second. Just tell me: when you picture your wedding day, what do you feel? What's the first image that comes to mind?`;
     addMessage('coord', opening);
     conversationHistory.push({
       role: 'assistant',
