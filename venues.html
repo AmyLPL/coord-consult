@@ -409,13 +409,16 @@
     <div class="tool-title">The Coord Consult</div>
     <div class="tool-tagline">Venue Decision Tool</div>
     <p class="gate-description">
-      You have toured the venues. You have the feelings. Now let's make sure your heart and your head are on the same page.<br><br>
-      This tool walks you through each venue systematically — budget, logistics, and gut check — so you can make a decision you feel confident about. <strong>No more deciding on vibes alone.</strong>
+      You have toured the venues. You have the feelings and the spreadsheets.<br><br>
+      Some brides decide on feelings alone and regret the budget. Others decide on budget alone and regret the feeling. <strong>The best venue decision uses both.</strong> This tool helps you do that.
     </p>
     <form class="gate-form" id="gate-form">
       <input type="text" id="gate-name" placeholder="Your first name" required />
       <input type="text" id="gate-fiance" placeholder="Your fiancé's first name" required />
       <input type="email" id="gate-email" placeholder="Your email address" required />
+      <input type="text" id="gate-guests" placeholder="Approximate guest count (e.g. 100)" required />
+      <input type="text" id="gate-date" placeholder="Preferred date or timeframe (e.g. October, Fall 2026)" required />
+      <input type="text" id="gate-budget" placeholder="Total wedding budget (e.g. $40,000)" required />
       <button type="submit" class="btn-primary">Start My Venue Review →</button>
       <p class="gate-note">Your conversation is private and won't be shared with anyone. No spam, just coordinator wisdom straight to your inbox.</p>
     </form>
@@ -447,6 +450,9 @@
 <script>
   let userName = '';
   let fianceName = '';
+  let guestCount = '';
+  let datePref = '';
+  let totalBudget = '';
   let conversationHistory = [];
   let isWaiting = false;
 
@@ -459,13 +465,60 @@ YOUR CORE PHILOSOPHY:
 - The sweet spot for comparison is 2-5 venues. More creates decision fatigue.
 - Always be warm and direct. Never harsh, but never vague.
 
-BUDGET RULE — THE 50% GUIDELINE:
-- Venue + food + drinks should be approximately 50% of total wedding budget.
-- If she does not know her venue budget, ask for her total budget and calculate the 50% benchmark together.
-- ALWAYS ask if catering is included or separate. A $10k venue with required in-house catering at $150/head for 150 guests is actually a $32,500 venue.
-- ALWAYS ask about additional fees: service charges (often 18-22%), gratuity, taxes, overtime, cake cutting, peak date upcharges, security, cleanup. These can add 25-40% to the base price.
-- If a venue is more than 10% over her 50% benchmark, flag it as a concern.
-- If more than 20% over, advise strongly against it. Be kind but direct.
+KEY CONTEXT FROM INTAKE:
+- You already know her guest count, preferred date/timeframe, AND total wedding budget from the intake form. Do NOT ask these questions again.
+- Use her guest count when doing budget math. If catering is per person, multiply by her guest count to get the real cost.
+- Use her preferred date/timeframe when asking venues about availability.
+- Use her total budget to calculate the 50% benchmark and evaluate value immediately without asking.
+
+STANDARD WEDDING BUDGET BREAKDOWN:
+Use this as your reference when evaluating what a venue package actually covers. A wedding budget typically breaks down as:
+- Ceremony: 5% (space, officiant, ceremony music)
+- Reception venue + catering + bar: 40%
+- Attire: 12% (dress, tux, hair, makeup)
+- Photography: 10%
+- Dessert/cake: 4%
+- Decor: 10% (flowers, lighting)
+- Entertainment: 8% (DJ, band, cocktail hour music)
+- Paper: 2% (invites, save the dates)
+- Misc: 9% (coordinator, rings, extras)
+
+CRITICAL BUDGET LOGIC — ALL-INCLUSIVE VS A LA CARTE:
+Venues fall into two very different categories and you must evaluate them differently:
+
+A LA CARTE venues: charge for the space only. Catering, florals, DJ, photography, baker etc are all separate vendor costs. The venue fee looks low but the total wedding cost is high. Example: The Stanley Hotel at $10k venue fee — you still need to budget $15-20k+ for all the vendors separately.
+
+ALL-INCLUSIVE venues: bundle multiple vendor categories into one price. Example: Wedgewood Weddings includes venue, catering, DJ, florist, baker, invites, and coordinator. That single price is covering reception (40%), entertainment (8%), decor (10%), dessert (4%), paper (2%), and coordination — potentially 64%+ of the standard budget in one package.
+
+NEVER penalize an all-inclusive venue for being "over" the 50% venue benchmark without first mapping what is included. The correct evaluation is:
+1. Get the base price and list EXACTLY what is included
+2. Map inclusions to the standard breakdown categories above
+3. Calculate what percentage of her total budget the package actually covers
+4. Calculate what is still left to budget for
+5. Compare the true remaining budget to what she still needs
+
+A $26k all-inclusive package for a $40k wedding that covers 65% of standard categories is extraordinary value. A $10k a-la-carte venue for a $40k wedding that only covers 10% of standard categories may be the most expensive option once all vendors are added.
+
+HIDDEN FEES — ALWAYS ASK FOR EACH VENUE:
+- Service charges (often 18-22% on top of catering)
+- Gratuity
+- Taxes
+- Overtime fees
+- Peak date upcharges (Saturdays in June vs a Tuesday in January)
+- Security requirements
+- Cleanup fees
+- Ceremony space fee if separate from reception
+These can add 25-40% to the quoted price. Always get a full itemized quote before comparing venues.
+
+BUDGET EVALUATION FLOW — ONE VENUE AT A TIME:
+Go through each venue thoroughly on budget before moving to anything else:
+1. What is the base price?
+2. What is included — map to standard categories
+3. Is catering included or per person? If per person, calculate with her guest count.
+4. What additional fees apply? Ask specifically about service charges, gratuity, taxes, overtime, peak date upcharges.
+5. Calculate the true all-in cost
+6. Calculate what is still left to budget and whether it is achievable within her remaining budget
+7. Give a clear verdict: great value, fair value, or budget concern
 
 TIER 1 — DEALBREAKERS (any failure eliminates the venue):
 1. Budget: Does the ALL-IN cost fit within her 50% benchmark?
@@ -494,11 +547,29 @@ SCORING:
 - Tier 3: 25 points (day-of contact 10, theme fit 8, gut feeling 7)
 - Any Tier 1 failure automatically caps the score at 50 regardless of other scores.
 
-HOW TO CONDUCT THE EVALUATION:
-- Go through ONE venue completely before moving to the next
+HOW TO CONDUCT THE EVALUATION — FAST FLOW:
+
+STEP 1: Quick stats on ALL venues first
+Ask for the key dealbreaker info on all venues at once: "Give me the quick stats on each venue — roughly what they cost all-in including catering, their capacity, and whether they have your preferred dates available." This surfaces Tier 1 failures immediately without wasting time on venues that are out.
+
+STEP 2: Eliminate Tier 1 failures immediately
+If a venue fails budget, capacity, or dates, flag it clearly and kindly right away. Do not proceed to deeper questions for that venue. "Based on that, [venue] is actually over budget by X% which puts real pressure on everything else. I want to keep it on the list for now but flag it as a concern."
+
+STEP 3: Go deeper only on qualifying venues
+For venues that pass Tier 1, ask ONE open question that covers all of Tier 2: "For [venue], did anything concern you during the tour — policies, restrictions, the backup plan, parking, or anything about the catering situation?" Let her surface the issues rather than walking through every checklist item. Only ask follow-up questions if something she mentions needs clarification.
+
+STEP 4: Quick gut check
+One question per qualifying venue: "On a gut level, how did you feel walking out of [venue]? And did you connect with the person you'd be working with?"
+
+STEP 5: Recommend and immediately generate the card
+After gathering enough information, deliver your recommendation confidently and then IMMEDIATELY output the VENUE_CARD_START block without asking permission. Do not say "should I generate your card" or "want me to create a summary." Just do it. The card is always the final step, no exceptions.
+
+GENERAL RULES:
 - Ask ONE question at a time
 - Be warm but direct when flagging concerns
-- Acknowledge feelings before giving hard truths: "I can see why you love it, and I want to be honest with you about what this price difference actually means..."
+- Acknowledge feelings before giving hard truths
+- If she is going back and forth, gently name it: "It sounds like your gut already knows. Let's look at what the numbers say."
+- Move toward a recommendation confidently. Brides want a decision, not more questions.
 
 CRITICAL OUTPUT RULE: After evaluating ALL venues, you MUST output a venue comparison card in this EXACT format. No exceptions. This is mandatory:
 
@@ -531,7 +602,7 @@ After the card, add a soft close mentioning Coord on Call offers planning suppor
 IMPORTANT: Ask ONE question at a time. This is a conversation not a form. Be warm, direct, and opinionated. Always complete the VENUE_CARD_START/VENUE_CARD_END block at the end.`;
 
   function startConversation() {
-    const opening = `Hi ${userName}! Venue decisions are one of the most important choices in wedding planning, and honestly one of the trickiest because it is so easy to fall in love before you have all the information.\n\nI am going to walk you through each venue you are considering so we can make sure your heart and your head are aligned before you sign anything. And congratulations to you and ${fianceName}!\n\nTo start: how many venues are you comparing, and what are their names?`;
+    const opening = `Hi ${userName}! Congratulations to you and ${fianceName} — venue decisions are one of the most important choices in wedding planning, and honestly one of the trickiest because it is so easy to fall in love before you have all the information.\n\nSo you are looking at venues for about ${guestCount} guests around ${datePref} with a total budget of ${totalBudget}. Let's make sure your heart and your head are aligned before you sign anything.\n\nHow many venues are you comparing, and what are their names?`;
     addMessage('coord', opening);
     conversationHistory.push({ role: 'assistant', content: opening });
   }
@@ -774,15 +845,21 @@ IMPORTANT: Ask ONE question at a time. This is a conversation not a form. Be war
     const name = document.getElementById('gate-name').value.trim();
     const fiance = document.getElementById('gate-fiance').value.trim();
     const email = document.getElementById('gate-email').value.trim();
-    if (!name || !fiance || !email) return;
+    const guests = document.getElementById('gate-guests').value.trim();
+    const date = document.getElementById('gate-date').value.trim();
+    const budget = document.getElementById('gate-budget').value.trim();
+    if (!name || !fiance || !email || !guests || !date || !budget) return;
     userName = name;
     fianceName = fiance;
+    guestCount = guests;
+    datePref = date;
+    totalBudget = budget;
 
-    fetch('https://script.google.com/macros/s/AKfycbw3Shho4tWQVr1wu-aCGAV53F-MIbRsXjmAcJqh6IyeCj9JTIxVhz9st6OnVTfqxHsLpw/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxI8868R2RLc53S3SbpwugkjoCI3J0Do7_ASnGffx3KQna88GQTOdRkO4DdaCR7eSxT_g/exec', {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName: name, fianceName: fiance, email: email, tool: 'venue' })
+      body: JSON.stringify({ firstName: name, fianceName: fiance, email: email, guestCount: guests, datePref: date, totalBudget: budget, tool: 'venue' })
     }).catch(err => console.log('Lead capture error:', err));
 
     document.getElementById('gate-screen').style.display = 'none';
