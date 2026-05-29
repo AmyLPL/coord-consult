@@ -531,7 +531,7 @@ After the card, add a soft close mentioning Coord on Call offers planning suppor
 IMPORTANT: Ask ONE question at a time. This is a conversation not a form. Be warm, direct, and opinionated. Always complete the VENUE_CARD_START/VENUE_CARD_END block at the end.`;
 
   function startConversation() {
-    const opening = `Hi ${userName}! Venue decisions are one of the most important choices in wedding planning, and honestly one of the trickiest because it is so easy to fall in love before you have all the information.\n\nI am going to walk you through each venue you are considering so we can make sure your heart and your head are aligned before you sign anything.\n\nTo start: how many venues are you comparing, and what are their names?`;
+    const opening = `Hi ${userName}! Venue decisions are one of the most important choices in wedding planning, and honestly one of the trickiest because it is so easy to fall in love before you have all the information.\n\nI am going to walk you through each venue you are considering so we can make sure your heart and your head are aligned before you sign anything. And congratulations to you and ${fianceName}!\n\nTo start: how many venues are you comparing, and what are their names?`;
     addMessage('coord', opening);
     conversationHistory.push({ role: 'assistant', content: opening });
   }
@@ -590,6 +590,21 @@ IMPORTANT: Ask ONE question at a time. This is a conversation not a form. Be war
     }, 100);
   }
 
+  function renderBar(label, score, max, color) {
+    if (score === null || score === undefined) return '';
+    const pct = Math.round((score / max) * 100);
+    return `
+      <div style="margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+          <div style="font-size: 10px; color: #9e9896; letter-spacing: 0.08em;">${label}</div>
+          <div style="font-size: 10px; color: #9e9896;">${score}/${max}</div>
+        </div>
+        <div style="height: 6px; background: #f0ebe6; border-radius: 3px; overflow: hidden;">
+          <div style="height: 100%; width: ${pct}%; background: ${color}; border-radius: 3px; transition: width 0.6s ease;"></div>
+        </div>
+      </div>`;
+  }
+
   function renderVenueCard(data) {
     const messages = document.getElementById('chat-messages');
     const wrapper = document.createElement('div');
@@ -599,12 +614,21 @@ IMPORTANT: Ask ONE question at a time. This is a conversation not a form. Be war
       const rank = i + 1;
       const medalColor = rank === 1 ? '#c9a96e' : rank === 2 ? '#9e9896' : '#b87057';
       const failBadge = v.tier1_fail ? `<span style="background: #fde8e8; color: #c0695a; font-size: 10px; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-left: 8px;">Budget concern</span>` : '';
-      
+      const hasScore = v.score !== null && v.score !== undefined;
+      const showBars = hasScore && v.tier1_score !== null && v.tier2_score !== null && v.tier3_score !== null;
+
+      const scoreSection = showBars ? `
+        <div style="min-width: 160px;">
+          ${renderBar('Budget & logistics', v.tier1_score, 40, '#d4a09a')}
+          ${renderBar('Vision fit', v.tier2_score, 35, '#8a9bbf')}
+          ${renderBar('Gut check', v.tier3_score, 25, '#8a9e78')}
+          <div style="font-size: 11px; font-weight: 500; color: #3d3d3d; text-align: right; margin-top: 4px;">${v.score}/100</div>
+        </div>` : '';
+
       return `
-        <div style="padding: 20px 32px; border-bottom: 1px solid #f0ebe6; display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: start;">
-          <div style="text-align: center;">
-            <div style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: ${medalColor};">${rank}</div>
-            <div style="font-size: 10px; color: #9e9896; letter-spacing: 0.1em;">${v.score}/100</div>
+        <div style="padding: 20px 32px; border-bottom: 1px solid #f0ebe6; display: grid; grid-template-columns: 40px 1fr ${showBars ? '180px' : ''}; gap: 16px; align-items: start;">
+          <div style="text-align: center; padding-top: 2px;">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: ${medalColor}; line-height: 1;">${rank}</div>
           </div>
           <div>
             <div style="font-size: 15px; font-weight: 500; color: #3d3d3d; margin-bottom: 4px;">${v.name}${failBadge}</div>
@@ -612,11 +636,7 @@ IMPORTANT: Ask ONE question at a time. This is a conversation not a form. Be war
             ${v.highlight ? `<div style="font-size: 11px; color: #8a9e78; margin-bottom: 3px;">✓ ${v.highlight}</div>` : ''}
             ${v.concern ? `<div style="font-size: 11px; color: #c0695a;">⚠ ${v.concern}</div>` : ''}
           </div>
-          <div style="text-align: right; white-space: nowrap;">
-            <div style="font-size: 10px; color: #9e9896; letter-spacing: 0.1em; margin-bottom: 4px;">T1: ${v.tier1_score}/40</div>
-            <div style="font-size: 10px; color: #9e9896; letter-spacing: 0.1em; margin-bottom: 4px;">T2: ${v.tier2_score}/35</div>
-            <div style="font-size: 10px; color: #9e9896; letter-spacing: 0.1em;">T3: ${v.tier3_score}/25</div>
-          </div>
+          ${scoreSection}
         </div>`;
     }).join('');
 
