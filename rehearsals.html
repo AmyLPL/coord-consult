@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DIY Rehearsal Lineup | Coord on Call</title>
+<title>DIY Rehearsal Worksheet | Coord on Call</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -19,10 +20,10 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
 
-  .site-header { background: var(--white); border-bottom: 1px solid var(--blush-light); padding: 18px 32px; display: flex; align-items: center; justify-content: center; }
-  .site-header img { height: 44px; }
+  .site-header { background: var(--white); border-bottom: 1px solid var(--blush-light); padding: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .site-header img { height: 250px; display: block; }
 
-  .page-hero { background: var(--white); border-bottom: 2px solid var(--blush); text-align: center; padding: 32px 24px 28px; }
+  .page-hero { background: var(--white); border-bottom: 2px solid var(--blush); text-align: center; padding: 16px 24px 20px; }
   .page-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 400; color: var(--charcoal); margin-bottom: 8px; }
   .page-hero p { font-size: 14px; font-weight: 300; color: var(--grey); max-width: 500px; margin: 0 auto; line-height: 1.6; }
 
@@ -150,7 +151,10 @@
     body { background: white; }
     .site-header, .page-hero, .card, .btn-print, .print-note, .output-header, .consult-nudge { display: none !important; }
     .main { margin: 0; padding: 0; max-width: 100%; }
-    .output-card { border: none; page-break-inside: avoid; margin-bottom: 32px; }
+    .output-card { border: none; margin-bottom: 32px; }
+    .output-card + .output-card { page-break-before: always; }
+    .print-section-header { page-break-after: avoid; }
+    .standing-diagram { page-break-inside: avoid; }
     .print-section-header { display: block !important; }
     .output-body { padding: 0; }
     .lineup-row { padding: 8px 0; border-bottom: 1px solid #f5e8e6; }
@@ -176,11 +180,11 @@
 <body>
 
 <header class="site-header">
-  <img src="https://static.wixstatic.com/shapes/73d71f_cb82c02a5d394bf39834a4a6485c3f45.svg" alt="Coord on Call" />
+  <div style="height:110px;overflow:hidden;display:flex;align-items:center;justify-content:center;"><img src="https://static.wixstatic.com/shapes/73d71f_cb82c02a5d394bf39834a4a6485c3f45.svg" alt="Coord on Call" style="height:250px;display:block;" /></div>
 </header>
 
 <div class="page-hero">
-  <h1>DIY Rehearsal Lineup</h1>
+  <h1>DIY Rehearsal Worksheet</h1>
   <p>Start with three quick decisions, then fill in your people. Your printable lineup builds as you go.</p>
 </div>
 
@@ -361,6 +365,7 @@
       <div class="output-title">Ceremony Processional</div>
       <div class="output-sub">Entrance Order</div>
     </div>
+    <div class="print-section-header">Ceremony Processional — Entrance Order</div>
     <div class="output-body" id="processional">
       <div style="text-align:center;padding:20px 0;color:var(--grey);font-size:14px;font-style:italic;">Make your decisions above to generate your lineup</div>
     </div>
@@ -384,6 +389,7 @@
       <div class="output-title">Ceremony Recessional</div>
       <div class="output-sub">Exit Order</div>
     </div>
+    <div class="print-section-header">Ceremony Recessional — Exit Order</div>
     <div class="output-body" id="recessional">
       <div style="text-align:center;padding:20px 0;color:var(--grey);font-size:14px;font-style:italic;">Fill in your people above to generate your exit order</div>
     </div>
@@ -767,11 +773,7 @@
     var hasFamilyExit = hasKids || hasSpecial || foldedPeople.length > 0;
 
     if (hasFamilyExit) {
-      var familyParts = [];
-      if (foldedPeople.length) familyParts.push(foldedPeople.join(' + '));
-      if (hasKids) familyParts.push([ringbearer, flowergirl].filter(Boolean).join(' + '));
-      if (hasSpecial) familyParts.push("grandparents, godparents, and honorary guests");
-      rec += lrow(r++, familyParts.join(', '), "family exit");
+      rec += lrow(r++, "Family Exit", "flower girl, ring bearer, grandparents or honored guests as applicable");
     }
 
     document.getElementById('recessional').innerHTML = rec;
